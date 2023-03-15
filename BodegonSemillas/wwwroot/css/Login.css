@@ -1,0 +1,58 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    background-color: #E6E6E6;
+    height: 100vh;
+}
+
+#login .container #login-row #login-column #login-box {
+    margin-top: 20px;
+    max-width: 900px;
+    border-radius: 26px;
+    height: 450px;
+    background-color: #FFFFFF;
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+
+h3 {
+    color: #000000;
+    font-size: 36px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-bottom: 35px
+}
+
+#btn_inicio {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: #813434;
+    padding: 9px 33px;
+    border-radius: 8px;
+    border: 2px solid #813434;
+    transition-duration: 0.4s;
+}
+
+#btn_inicio:hover {
+    background-color: #8B6969;
+    color: white;
+    border: 2px solid #764C4C;
+}
+
+#link_registro {
+    color: red;
+}
+
+form label {
+    color: black;
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 13px;
+}
+
+.icono-ojo {
+    background: blue;
+}
