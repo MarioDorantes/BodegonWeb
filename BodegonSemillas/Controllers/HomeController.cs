@@ -10,7 +10,7 @@ namespace BodegonSemillas.Controllers
     public class HomeController : Controller
     {
 
-        string baseURL = "http://192.168.100.10:5014";
+        //string baseURL = "http://192.168.100.10:5014";
 
         private readonly ILogger<HomeController> _logger;
 
@@ -18,7 +18,7 @@ namespace BodegonSemillas.Controllers
         {
             _logger = logger;
         }
-
+        /*
         public async Task<IActionResult> Index()
         {
             
@@ -43,14 +43,13 @@ namespace BodegonSemillas.Controllers
             }
 
             return View();
-        }
-
-        public IActionResult Privacy()
+        }*/
+        public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Privacy()
         {
             return View();
         }

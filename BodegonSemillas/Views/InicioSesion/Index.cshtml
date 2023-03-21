@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Cliente
+@{
     ViewData["Title"] = "Inicio de Sesión";
 }
 
@@ -7,7 +8,7 @@
 
 <head>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <link href="~/css/Login.css" rel="stylesheet" />
 </head>
 
@@ -17,26 +18,25 @@
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-8">
                     <div id="login-box" class="col-md-12">
-                        <form id="login-form" class="form" action="" method="post">
+                        <form asp-controller="InicioSesion" asp-action="Index" method="post">
 
                             <h3 class="text-center">Iniciar Sesión</h3>
-                            
+
                             <div class="form-group">
                                 <label class="text">Correo:</label><br>
-                                <input type="text" id="correo" name="username" class="form-control">
+                                <input type="email" class="form-control" asp-for="Email" required>
                             </div>
                             <div class="form-group">
                                 <label class="text">Contraseña:</label><br>
                                 <div class="wrapp-input">
-                                    <span class="icono-ojo"> <i class="fa-solid fa-eye"></i> </span>
-                                    <input type="password" id="contra" name="password" class="form-control">
+                                    <input type="password" class="form-control" asp-for="Password" required>
                                 </div>
                             </div>
-                            
+
                             <div class="text-center">
                                 <input type="submit" id="btn_inicio" name="Iniciar sesión" class="btn btn-info btn-md" value="Iniciar sesión">
                             </div>
-                            
+
                             <div class="text-md-center">
                                 <a href="#" id="link_registro" class="text">¿No tienes cuenta? Registrate</a>
                             </div>
