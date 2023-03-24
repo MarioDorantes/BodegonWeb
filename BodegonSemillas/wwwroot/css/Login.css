@@ -41,7 +41,7 @@ h3 {
 }
 
 #link_registro {
-    color: red;
+    color: #0000FF;
 }
 
 form label {
@@ -51,8 +51,4 @@ form label {
 
 .form-control {
     border-radius: 13px;
-}
-
-.icono-ojo {
-    background: blue;
 }

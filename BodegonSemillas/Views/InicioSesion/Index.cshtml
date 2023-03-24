@@ -33,12 +33,19 @@
                                 </div>
                             </div>
 
+                            @if (ViewData["Error"] != null)
+                            {
+                                <div class="text-center" style="color:red;">
+                                    @ViewData["Error"]
+                                </div>
+                            }
+
                             <div class="text-center">
                                 <input type="submit" id="btn_inicio" name="Iniciar sesión" class="btn btn-info btn-md" value="Iniciar sesión">
                             </div>
 
-                            <div class="text-md-center">
-                                <a href="#" id="link_registro" class="text">¿No tienes cuenta? Registrate</a>
+                            <div class="text-center">
+                                <a href="@Url.Action("Index", "RegistroUsuario")" id="link_registro" class="text">¿No tienes cuenta? Registrate</a>
                             </div>
                         </form>
                     </div>

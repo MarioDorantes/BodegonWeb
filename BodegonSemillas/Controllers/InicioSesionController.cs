@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Text;
 
 namespace BodegonSemillas.Controllers
@@ -30,12 +31,26 @@ namespace BodegonSemillas.Controllers
                 ServicePointManager.ServerCertificateValidationCallback =
                 (sender, cert, chain, sslPolicyErrors) => true;
 
-                var response = await client.PostAsync("http://192.168.100.10:5297/cliente/login", content);
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var result = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(result);
+                    var response = await client.PostAsync("http://192.168.100.10:5297/cliente/login", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(result);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ViewData["Error"] = "Credenciales incorrectas";
+                        return View();
+                    }
                 }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine("La conexión falló" + ex.Message);
+                }
+                
             }
             return View();
         }
