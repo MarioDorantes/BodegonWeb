@@ -1,8 +1,25 @@
-﻿@{
+﻿@using Newtonsoft.Json;
+@{
     ViewData["Title"] = "Home Page";
+}
+@{
+    var nombreUsuarioJson = TempData["NombreUsuarioLogueado"] as string ?? string.Empty;
+    Cliente nombreUsuario = null;
+    if (!string.IsNullOrEmpty(nombreUsuarioJson))
+    {
+        nombreUsuario = JsonConvert.DeserializeObject<Cliente>(nombreUsuarioJson);
+    }
+    var nombre = nombreUsuario?.Nombre;
 }
 
 <div class="text-center">
+
     <h1 class="display-4">Welcome</h1>
+
+    @if (!string.IsNullOrEmpty(nombre))
+    {
+        <p>Hola, @nombre</p>
+    }
+
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

@@ -1,15 +1,19 @@
 ﻿using BodegonSemillas.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Data;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace BodegonSemillas.Controllers
 {
     public class InicioSesionController : Controller
     {
+        string baseURL = "http://192.168.100.10:5297";
+
         public IActionResult Index()
         {
             return View();
@@ -38,6 +42,9 @@ namespace BodegonSemillas.Controllers
                     {
                         var result = await response.Content.ReadAsStringAsync();
                         Console.WriteLine(result);
+                        var idCliente = result;
+                        int idClienteParseado = int.Parse(idCliente);
+                        await ObtenerNombreUsuario(idClienteParseado);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -55,6 +62,46 @@ namespace BodegonSemillas.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerNombreUsuario(int idUsuario)
+        {
+
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+            using (var client = new HttpClient(handler))
+            {
+                ServicePointManager.ServerCertificateValidationCallback =
+                (sender, cert, chain, sslPolicyErrors) => true;
+
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    HttpResponseMessage getData = await client.GetAsync("cliente/getusername?idUsuario=" + idUsuario);
+
+                    if (getData.IsSuccessStatusCode)
+                    {
+                        string results = getData.Content.ReadAsStringAsync().Result;
+                        var nombreUsuarioLogueado = JsonConvert.DeserializeObject(results);
+                        TempData["NombreUsuarioLogueado"] = nombreUsuarioLogueado.ToString();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ocurrió un error, intente más tarde");
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine("La conexión falló" + ex.Message);
+                }
+
+            }
+
+            return View();
+        }
 
     }
 }
