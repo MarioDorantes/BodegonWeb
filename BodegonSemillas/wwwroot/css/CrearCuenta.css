@@ -21,26 +21,30 @@
 }
 
 .form-column {
-    width: 45%;
+    max-width: 400px;
 }
 
 .form-row {
     display: flex;
     flex-direction: row;
     margin-bottom: 8px;
+    margin-top: 35px;
 }
 
 .form-label {
     width: 150px;
     font-weight: 500;
+    white-space: nowrap; 
 }
 
-.form-input {
+.form-control {
     flex-grow: 1;
+    width: 100%;
+    border-radius: 7px;
 }
 
 .checkbox {
-    margin-left: 10px;
+    margin-left: 1px;
 }
 
 .button {
@@ -54,10 +58,19 @@
     border-radius: 8px;
     border: 2px solid #813434;
     transition-duration: 0.4s;
+    width: 150px;
 }
 
 .button:hover {
     background-color: #8B6969;
     color: white;
     border: 2px solid #764C4C;
+}
+
+h3 {
+    margin-bottom: 15px;
+}
+
+#lbFactura {
+    margin-left: 130px;
 }
