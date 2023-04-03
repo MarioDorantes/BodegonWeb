@@ -1,7 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+	ViewData["Title"] = "Terminos y condicones";
 }
-<h1>Pagina Terminos y condiciones</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Términos y condiciones</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="~/css/crearcuenta.css" rel="stylesheet" />
+
+</head>
+<body>
+	<div id="registro">
+		<div class="container">
+			<div id="registro-row" class="row justify-content-center align-items-center">
+				<div id="registro-box" class="col-md-12">
+					<form asp-controller="TerminosYCondiciones" asp-action="Index" method="post">
+
+						<div id="registro-column" class="row justify-content-center align-items-center">
+							<h3 class="text-center">Crear cuenta</h3>
+
+							<label id="lbTerminosCondiciones" for="terminos" class="form-label text-center">Bienvenido, para concluir debes aceptar nuestros términos y condiciones</label>
+							<div class="form-row">
+								<label id="lbAceptarTerminos" for="factura" class="form-label text-center">Acepto los términos y condiciones</label>
+								<input type="checkbox" id="checkBoxTerminos" class="checkbox text-center">
+							</div>
+
+							<div class="text-center">
+								<input type="button" id="btn_registro" name="registro" class="btn btn-info btn-md" value="Crear cuenta">
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
 

@@ -32,6 +32,7 @@ h3 {
     border-radius: 8px;
     border: 2px solid #813434;
     transition-duration: 0.4s;
+    color: white;
 }
 
 #btn_inicio:hover {

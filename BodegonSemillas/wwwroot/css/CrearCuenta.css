@@ -55,6 +55,7 @@
     border-radius: 8px;
     border: 2px solid #813434;
     transition-duration: 0.4s;
+    color: white;
 }
 
 #btn_siguiente:hover {
@@ -74,4 +75,42 @@ h3 {
 
 #lbFactura {
     margin-left: 7px;
+}
+
+/* Elementos asociados a la vista de Terminos y condiciones */
+/* Boton que concluirá el registro ubicado en la vista Terminos y Condiciones */
+#btn_registro {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    background-color: #813434;
+    padding: 9px 33px;
+    border-radius: 8px;
+    border: 2px solid #813434;
+    transition-duration: 0.4s;
+    color: white;
+}
+
+#btn_registro:hover {
+    background-color: #8B6969;
+    color: white;
+    border: 2px solid #764C4C;
+}
+
+label#lbTerminosCondiciones,
+label#lbAceptarTerminos,
+input[type="checkbox"]#checkBoxTerminos {
+    display: block;
+    margin: auto;
+    text-align: center;
+    max-width: 80%;
+    width: auto;
+}
+
+label#lbAceptarTerminos {
+    margin-right: 10px;
+}
+
+input[type="checkbox"]#checkBoxTerminos {
+    margin-top: 8px;
+    margin-left: 0;
 }

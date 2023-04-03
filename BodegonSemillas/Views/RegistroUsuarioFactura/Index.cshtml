@@ -1,6 +1,99 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Cliente
 @{
+	ViewData["Title"] = "Crear Cuenta Factura";
 }
-<h1>PAGINA FACTURA</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Crear cuenta factura</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link href="~/css/crearcuenta.css" rel="stylesheet" /> 
+
+</head>
+<body>
+	<div id="registro">
+		<div class="container">
+			<div id="registro-row" class="row justify-content-center align-items-center">
+				<div id="registro-box" class="col-md-12">
+					<form asp-controller="RegistroUsuarioFactura" asp-action="Index" method="post">
+
+						<div id="registro-column" class="row justify-content-center align-items-center">
+							<h3 class="text-center">Crear cuenta</h3>
+							<p class="text-center">Ingresa tus datos de facturación</p>
+
+							<div class="form-column">
+								<label for="tipoPersona" class="form-label">Tipo de persona jurídica:</label>
+								<select class="form-control" id="combo-box">
+									<option value="opcMoral">Persona Moral</option>
+									<option value="opcFisica">Persona física</option>
+								</select>
+								<div class="form-column" id="empresa-container">
+									<label for="nombreEmpresa" class="form-label">Nombre de la empresa:</label>
+									<input type="text" id="empresa" class="form-control" asp-for="Empresa" required>
+								</div>
+							</div>
+							<div class="form-column">
+								<div class="form-column">
+									<label for="rcf" class="form-label">RFC:</label>
+									<input type="text" id="rfc" class="form-control" asp-for="Rfc" required>
+								</div>
+							</div>
+
+							<div class="text-center">
+								<input type="button" onclick="validarCamposVacios()" id="btn_siguiente" name="siguiente" class="btn btn-info btn-md" value="Siguiente">
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+
+	//función que sirve para ocultar el input de empresa, en caso de que se cambie el tipo de persona
+	function mostrarOcultarCombo(comboBox, empresaContainer) {
+		comboBox.addEventListener("change", function () {
+			if (comboBox.value === "opcMoral") {
+				empresaContainer.style.display = "block";
+				return 0;
+			} else {
+				var empresaInput = document.getElementById("empresa");
+				empresaInput.value = "";
+				empresaContainer.style.display = "none";
+				return 1; 
+			}
+		});
+	}
+
+	//la funcion anterior, se manda a llamar desde que se inicia la página
+	const comboBox = document.getElementById("combo-box");
+	const empresaContainer = document.getElementById("empresa-container");
+	mostrarOcultarCombo(comboBox, empresaContainer);
+	
+
+	//funcion para validar campos, es disparada cuando se pulsa el boton "siguiente"
+	function validarCamposVacios() {
+		const rfcInput = document.getElementById("rfc");
+		const empresaInput = document.getElementById("empresa");
+
+		if (comboBox.value === "opcMoral" && empresaInput.value.trim() === "") {
+			alert("Por favor ingrese el nombre de la empresa.");
+			return false;
+		}
+
+		if (rfcInput.value.trim() === "") {
+			alert("Por favor ingrese el RFC.");
+			return false;
+		}
+		
+		window.location.replace('@Url.Action("Index", "TerminosYCondiciones")');
+		return true;
+	}
+
+
+</script>
+</html>
