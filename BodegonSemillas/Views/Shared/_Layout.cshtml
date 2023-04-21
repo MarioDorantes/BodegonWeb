@@ -28,6 +28,7 @@
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
+                        <li class="nav-item ms-auto">
                             <a class="nav-link text-white" asp-area="" asp-controller="InicioSesion" asp-action="Index">Iniciar Sesión</a>
                         </li>
                     </ul>
@@ -35,7 +36,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

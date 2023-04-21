@@ -13,38 +13,31 @@
 
 	<script>
 
-		function validarCamposVacios() {
+		function validarCamposVacios(event) {
 			var campos = ["nombre", "paterno", "materno", "email", "password1", "password2"];
 			for (var i = 0; i < campos.length; i++) {
 				var valor = document.getElementById(campos[i]).value;
 				if (valor === "") {
 					alert("Por favor, completa todos los campos.");
+					event.preventDefault();
 					return false;
 				}
 			}
-			var password1 = document.getElementById("password1").value;
-			var password2 = document.getElementById("password2").value;
-			if (!compararPasswords(password1, password2)) {
-				return false;
-			}
-			irASiguiente();
-		}
-
-		function compararPasswords(password1, password2) {
-			if (password1 === password2) {
-				return true;
-			} else {
+			var passwordsCoinciden = compararPasswords();
+			if (!passwordsCoinciden) {
+				event.preventDefault();
 				alert("Las contraseñas no coinciden");
 				return false;
 			}
+			return true;
 		}
 
-		function irASiguiente() {
-			const url = document.getElementById("checkBoxfactura").checked
-				? "@Url.Action("Index", "RegistroUsuarioFactura")"
-				: "@Url.Action("Index", "TerminosYCondiciones")";
-			window.location.href = url;
+		function compararPasswords() {
+			var password1 = document.getElementById("password1").value;
+			var password2 = document.getElementById("password2").value;
+			return password1 === password2;
 		}
+		
 	</script>
 
 </head>
@@ -53,7 +46,7 @@
 		<div class="container">
 			<div id="registro-row" class="row justify-content-center align-items-center">
 				<div id="registro-box" class="col-md-12">
-					<form asp-action="Index" asp-controller="RegistroUsuario" method="post">
+					<form asp-controller="RegistroUsuario" asp-action="RegistrarCliente" method="post" onsubmit="return validarCamposVacios(event);">
 
 						<div id="registro-column" class="row justify-content-center align-items-center">
 							<h3 class="text-center">Crear cuenta</h3>
@@ -90,13 +83,13 @@
 									<input type="tel" id="telefono" class="form-control" asp-for="Telefono">
 								</div>
 								<div class="form-row">
-									<label id="lbFactura" for="factura" class="form-label">Requiero factura con mis compras</label>
-									<input type="checkbox" id="checkBoxfactura" class="checkbox">
+									<label id="lbAceptarTerminos" for="factura" class="form-label">Acepto los términos y condiciones</label>
+									<input type="checkbox" id="checkBoxTerminos" class="checkbox">
 								</div>
 							</div>
 
 							<div class="text-center">
-								<input type="button" onclick="validarCamposVacios()" id="btn_siguiente" name="siguiente" class="btn btn-info btn-md" value="Siguiente">
+								<input type="submit" onclick="validarCamposVacios()" id="btn_registro" name="registro" class="btn btn-info btn-md mx-auto" value="Crear cuenta" style="display: none;">
 							</div>
 
 							<div class="text-center">
@@ -110,5 +103,22 @@
 		</div>
 	</div>
 </body>
+
+<script>
+	window.addEventListener('DOMContentLoaded', function () {
+		var checkbox = document.getElementById('checkBoxTerminos');
+		var registrar = document.getElementById('btn_registro');
+
+		// Establece el estado inicial del botón
+		registrar.style.display = checkbox.checked ? 'block' : 'none';
+
+		// Agrega un evento para actualizar el estado del botón cuando el checkbox cambia
+		checkbox.addEventListener('change', function () {
+			registrar.style.display = this.checked ? 'block' : 'none';
+			registrar.classList.add('text-center');
+		});
+	});
+</script>
+
 </html>
 
