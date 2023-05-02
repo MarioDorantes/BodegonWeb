@@ -20,15 +20,38 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <div class="form-group d-flex flex-column align-items-start w-75 px-0">
+                        <div class="input-group input-group-sm w-100">
+                            <input type="text" class="form-control" placeholder="Buscar productos">
+                            <div class="input-group-prepend me-3">
+                                <button class="btn btn-outline-secondary" type="button">Buscar</button>
+                            </div>
+                        </div>
+                        <select class="form-select form-select-sm mt-1">
+                            <option>Ordenar por</option>
+                            <option>Nombre</option>
+                            <option>Precio</option>
+                            <option>Popularidad</option>
+                        </select>
+                    </div>
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown link
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
                         <li class="nav-item">
-                        <li class="nav-item ms-auto">
                             <a class="nav-link text-white" asp-area="" asp-controller="InicioSesion" asp-action="Index">Iniciar Sesión</a>
                         </li>
                     </ul>
@@ -36,6 +59,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()

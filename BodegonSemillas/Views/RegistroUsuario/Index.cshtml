@@ -12,32 +12,104 @@
     <link href="~/css/crearcuenta.css" rel="stylesheet" />
 
 	<script>
-
-		function validarCamposVacios(event) {
+		
+		async function validarCamposVacios(event) {
 			var campos = ["nombre", "paterno", "materno", "email", "password1", "password2"];
 			for (var i = 0; i < campos.length; i++) {
 				var valor = document.getElementById(campos[i]).value;
 				if (valor === "") {
 					alert("Por favor, completa todos los campos.");
 					event.preventDefault();
+					event.stopPropagation();
 					return false;
 				}
 			}
-			var passwordsCoinciden = compararPasswords();
-			if (!passwordsCoinciden) {
+			//CORREO VALIDO O NO
+			const emailAux = document.getElementById("email").value;
+			const correoValidacion = await validarCorreo(emailAux);
+			if (!correoValidacion) {
+				alert("Este correo ya esta en uso");
 				event.preventDefault();
-				alert("Las contraseñas no coinciden");
+				event.stopPropagation();
 				return false;
+			}else{
+				alert("Se registra segun");
+				//return true;
 			}
-			return true;
 		}
 
-		function compararPasswords() {
-			var password1 = document.getElementById("password1").value;
-			var password2 = document.getElementById("password2").value;
-			return password1 === password2;
+		async function validarCorreo(email) {
+			try {
+				const response = await $.ajax({
+					type: "POST",
+					url: "/RegistroUsuario/ValidarEmail",
+					data: email,
+					contentType: "application/json"
+				});
+
+				if (response) {
+					//Correo en uso
+					console.log("CORREO NO VALIDO");
+					event.preventDefault();
+					event.stopPropagation();
+					return false;
+				} else {
+					//Correo valido
+					console.log("CORREO SI VALIDOO");
+					return true;
+				}
+			} catch (error) {
+				return false;
+			}
 		}
-		
+
+		/*
+		async function validarCamposVacios(event) {
+			// Validar campos vacíos
+			var campos = ["nombre", "paterno", "materno", "email", "password1", "password2"];
+			for (var i = 0; i < campos.length; i++) {
+				var valor = document.getElementById(campos[i]).value;
+				if (valor === "") {
+					alert("Por favor, completa todos los campos.");
+					event.preventDefault();
+					event.stopPropagation();
+					return false;
+				}
+			}
+
+			// Validar correo electrónico
+			var email = document.getElementById("email").value;
+			if (email !== "") {
+				const response = await $.ajax({
+					type: "POST",
+					url: "/RegistroUsuario/ValidarEmail",
+					data: { email: email },
+					contentType: "application/json",
+					success: function (response) {
+						if (response.valido) {
+							// Enviar formulario si el correo electrónico es válido
+							alert("correo valido");
+							return true;
+						} else {
+							alert("correo no valido");
+							event.preventDefault();
+							event.stopPropagation();
+							return false;
+						}
+					},
+					error: function () {
+						alert("error");
+						event.preventDefault();
+						event.stopPropagation();
+						return false;
+					}
+				});
+				event.preventDefault();
+				event.stopPropagation();
+				return false;
+			}
+		}*/
+				
 	</script>
 
 </head>
