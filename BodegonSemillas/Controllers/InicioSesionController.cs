@@ -80,11 +80,11 @@ namespace BodegonSemillas.Controllers
 
                 try
                 {
-                    HttpResponseMessage getData = await client.GetAsync("cliente/getusername?idUsuario=" + idUsuario);
+                    HttpResponseMessage response = await client.GetAsync("cliente/getusername?idUsuario=" + idUsuario);
 
-                    if (getData.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        string results = getData.Content.ReadAsStringAsync().Result;
+                        string results = response.Content.ReadAsStringAsync().Result;
                         var nombreUsuarioLogueado = JsonConvert.DeserializeObject(results);
                         TempData["NombreUsuarioLogueado"] = nombreUsuarioLogueado.ToString();
                     }
