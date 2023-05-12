@@ -67,8 +67,8 @@ namespace BodegonSemillas.Controllers
         [HttpGet]
 		public async Task<IActionResult> ObtenerSucursalesCiudad()
 		{
-            string ciudad = "Xalapa";
-            string estado = "Veracruz";
+            string ciudad = "XAL";
+            string estado = "VER";
 
             var handler = new HttpClientHandler();
 			handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;

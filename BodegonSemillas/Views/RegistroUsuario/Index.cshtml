@@ -23,94 +23,10 @@
 					return false;
 				}
 			}
-			//CORREO VALIDO O NO
-			const emailAux = document.getElementById("email").value;
-			const correoValidacion = await validarCorreo(emailAux);
-			if (!correoValidacion) {
-				alert("Este correo ya esta en uso");
-				event.preventDefault();
-				event.stopPropagation();
-				return false;
-			}else{
-				alert("Se registra segun");
-				//return true;
-			}
 		}
-
-		async function validarCorreo(email) {
-			try {
-				const response = await $.ajax({
-					type: "POST",
-					url: "/RegistroUsuario/ValidarEmail",
-					data: email,
-					contentType: "application/json"
-				});
-
-				if (response) {
-					//Correo en uso
-					console.log("CORREO NO VALIDO");
-					event.preventDefault();
-					event.stopPropagation();
-					return false;
-				} else {
-					//Correo valido
-					console.log("CORREO SI VALIDOO");
-					return true;
-				}
-			} catch (error) {
-				return false;
-			}
-		}
-
-		/*
-		async function validarCamposVacios(event) {
-			// Validar campos vacíos
-			var campos = ["nombre", "paterno", "materno", "email", "password1", "password2"];
-			for (var i = 0; i < campos.length; i++) {
-				var valor = document.getElementById(campos[i]).value;
-				if (valor === "") {
-					alert("Por favor, completa todos los campos.");
-					event.preventDefault();
-					event.stopPropagation();
-					return false;
-				}
-			}
-
-			// Validar correo electrónico
-			var email = document.getElementById("email").value;
-			if (email !== "") {
-				const response = await $.ajax({
-					type: "POST",
-					url: "/RegistroUsuario/ValidarEmail",
-					data: { email: email },
-					contentType: "application/json",
-					success: function (response) {
-						if (response.valido) {
-							// Enviar formulario si el correo electrónico es válido
-							alert("correo valido");
-							return true;
-						} else {
-							alert("correo no valido");
-							event.preventDefault();
-							event.stopPropagation();
-							return false;
-						}
-					},
-					error: function () {
-						alert("error");
-						event.preventDefault();
-						event.stopPropagation();
-						return false;
-					}
-				});
-				event.preventDefault();
-				event.stopPropagation();
-				return false;
-			}
-		}*/
-				
+		
 	</script>
-
+	
 </head>
 <body>
 	<div id="registro">
@@ -121,6 +37,8 @@
 
 						<div id="registro-column" class="row justify-content-center align-items-center">
 							<h3 class="text-center">Crear cuenta</h3>
+
+							<div asp-validation-summary="All" class="text-danger"></div>
 
 							<div class="form-column">
 								<div class="form-column">
