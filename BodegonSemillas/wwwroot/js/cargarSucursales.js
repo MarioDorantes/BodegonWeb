@@ -4,7 +4,7 @@
 
 function cargarSucursales() {
     $.get('/Home/ObtenerSucursalesCiudad', function (data) {
-        var select = $('.form-select');
+        var select = $('#selectSucursales');
         select.empty();
         select.append('<option>Sucursales</option>');
         $.each(data, function (index, sucursal) {

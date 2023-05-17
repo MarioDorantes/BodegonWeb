@@ -28,10 +28,20 @@
                                 <button class="btn btn-outline-secondary" type="button">Buscar</button>
                             </div>
                         </div>
-                        <select class="form-select form-select-sm mt-1">
-                            <option>Sucursales</option>
-                            <option>Sucursal 1</option>
-                        </select>
+                        <div class="d-flex flex-row">
+                            <div class="flex-grow-1 me-2">
+                                <select id="selectSucursales" class="form-select form-select-sm mt-1" style="width: 200px;">
+                                    <option>Sucursales</option>
+                                    <option>Sucursal 1</option>
+                                </select>
+                            </div>
+                            <div class="flex-grow-1">
+                                <select id="selectCategorias" class="form-select form-select-sm mt-1" style="width: 200px;">
+                                    <option>Categorias</option>
+                                    <option>Categoria 1</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -78,6 +88,34 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/cargarSucursales.js"></script>
+    <script src="~/js/cargarCategorias.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $('#selectSucursales').change(function () {
+                var seleccionado = $(this).val();
+                console.log('Opción seleccionada:', seleccionado);
+            });
+
+            $('#selectCategorias').change(function () {
+                var seleccionado = $(this).val();
+                
+                //Se separan los atributos que se obtienen de cargarCategorias,
+                //para pasarlos de parametro en la vista de productos por categoria
+                var valores = seleccionado.split('-');
+                var clave = valores[0];
+                var nombre = valores[1];
+                console.log('Clave seleccionada:', clave);
+                console.log('Nombre seleccionado:', nombre);
+
+                var url = '@Url.Action("Index", "VistaProductosCategoria")';
+                url += '?clave=' + encodeURIComponent(clave) + '&nombre=' + encodeURIComponent(nombre);
+
+                window.location.href = url;
+            });
+        });
+    </script>
+
 </body>
 </html>
