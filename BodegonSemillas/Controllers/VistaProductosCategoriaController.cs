@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BodegonSemillas.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
 
 namespace BodegonSemillas.Controllers
 {
-	public class VistaProductosCategoria : Controller
+	public class VistaProductosCategoriaController : Controller
 	{
 
         string baseProductosURL = "https://192.168.100.10:5014";
@@ -18,11 +20,11 @@ namespace BodegonSemillas.Controllers
 		}
 
         [HttpGet]
-        public async Task<IActionResult> ObtenerProductosPorSucursalYCategoria()
+        public async Task<IActionResult> ObtenerProductosPorSucursalYCategoria(string clave)
         {
-
+            //id de la sucursal
             int id = 60;
-            int categoria = int.Parse(ViewBag.ClaveCategoria);
+            string categoria = clave;
             int pagina = 1;
 
             var handler = new HttpClientHandler();
@@ -43,11 +45,10 @@ namespace BodegonSemillas.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        /*
-						string json = await response.Content.ReadAsStringAsync();
-						List<VistaCategoria> categorias = JsonConvert.DeserializeObject<List<VistaCategoria>>(json);
-						return Json(categorias);*/
-                        Console.WriteLine("Funciona bien");
+                        string json = await response.Content.ReadAsStringAsync();
+                        VistaProductosResponse apiResponse = JsonConvert.DeserializeObject<VistaProductosResponse>(json);
+                        List<VistaProducto> productos = apiResponse.Products;
+                        return Ok(productos);
                     }
                     else
                     {
