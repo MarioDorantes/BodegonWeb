@@ -24,6 +24,24 @@
 				}
 			}
 		}
+
+		function validarPasswords() {
+			var password1 = document.getElementById("password1").value;
+			var password2 = document.getElementById("password2").value;
+
+			if (password1 !== password2) {
+				alert("Las contraseñas no coinciden");
+				return false;
+			}
+
+			if (password1.length < 8) {
+				alert("La contraseña debe tener al menos 8 caracteres");
+				return false;
+			}
+
+			return true;
+		}
+
 		
 	</script>
 	
@@ -33,7 +51,7 @@
 		<div class="container">
 			<div id="registro-row" class="row justify-content-center align-items-center">
 				<div id="registro-box" class="col-md-12">
-					<form asp-controller="RegistroUsuario" asp-action="RegistrarCliente" method="post" onsubmit="return validarCamposVacios(event);">
+					<form asp-controller="RegistroUsuario" asp-action="RegistrarCliente" method="post" onsubmit="return validarCamposVacios(event) && validarPasswords();">
 
 						<div id="registro-column" class="row justify-content-center align-items-center">
 							<h3 class="text-center">Crear cuenta</h3>
@@ -57,6 +75,12 @@
 									<label for="correo" class="form-label">Correo electrónico:</label>
 									<input type="email" id="email" class="form-control" asp-for="Email" required>
 								</div>
+								@if (ViewData["Error"] != null)
+								{
+									<div class="text-center" style="color:red;">
+										@ViewData["Error"]
+									</div>
+								}
 							</div>
 							<div class="form-column">
 								<div class="form-column">
@@ -65,7 +89,7 @@
 								</div>
 								<div class="form-column">
 									<label for="confirmar_contraseña" class="form-label">Confirmar contraseña:</label>
-									<input type="password" id="password2" class="form-control" required>
+									<input type="password" id="password2" class="form-control" name="password2" required>
 								</div>
 								<div class="form-column">
 									<label for="telefono" class="form-label">Número de teléfono:</label>

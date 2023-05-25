@@ -16,24 +16,33 @@ namespace BodegonSemillas.Controllers
 		[HttpPost]
 		public async Task<IActionResult> RegistrarClienteAsync(Cliente cliente)
 		{
-			if (cliente.Email == null) // Verifica si el correo electrónico es nulo
+
+			var errorContraseñas = VerificarPasswords(cliente.Password, Request.Form["password2"]);
+			if (errorContraseñas != null)
+			{
+				ModelState.AddModelError("Password", errorContraseñas);
+				return View(cliente);
+			}
+
+			//Validaciones del email
+			if (cliente.Email == null) 
 			{
 				ViewData["Error"] = "El correo electrónico es nulo";
 				return View();
 			}
 
-			// Primero, validamos el correo electrónico
+			// Llmada metodo Post validar email
 			var emailValido = await ValidarEmail("\"" + cliente.Email + "\"");
 
 			if (emailValido.correoValido == false)
 			{
-				// El correo electrónico ya está registrado, mostramos un mensaje de error al usuario
-				ModelState.AddModelError("Email", "El correo electrónico ya está registrado");
-				return View(cliente);
+                // Email ya está registrado
+                ViewData["Error"] = "Correo electronico en uso";
+				return View("Index", cliente);
 			}
 			else
 			{
-				// El correo electrónico es válido, podemos continuar con el registro
+				// Email válido
 				var handler = new HttpClientHandler();
 				handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
@@ -104,6 +113,22 @@ namespace BodegonSemillas.Controllers
 
 			return new { correoValido = false };
 		}
+
+		private string? VerificarPasswords(string password1, string password2)
+		{
+			if (password1 != password2)
+			{
+				return "Las contraseñas no coinciden";
+			}
+
+			if (password1.Length < 8)
+			{
+				return "La contraseña debe tener al menos 8 caracteres";
+			}
+
+			return null;
+		}
+
 
 	}
 }
