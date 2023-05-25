@@ -60,6 +60,7 @@ namespace BodegonSemillas.Controllers
 						{
 							var result = await response.Content.ReadAsStringAsync();
 							Console.WriteLine(result);
+							TempData["SuccessMessage"] = "Cuenta creada exitosamente!";
 							return RedirectToAction("Index", "Home");
 						}
 						else

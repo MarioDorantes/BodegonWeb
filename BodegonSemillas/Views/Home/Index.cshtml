@@ -44,6 +44,7 @@
 </head>
 
 <body onload="cargarSucursales()">
+    <div id="notification-container"></div>
     <div class="container-fluid justify-content-center">
         <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
             <ol class="carousel-indicators">
@@ -92,6 +93,30 @@
 
         </div>
     </div>
+
+    <script>
+        // Función para mostrar la notificación si se crea una cuenta
+        function showNotification(message) {
+            var notification = document.createElement('div');
+            notification.classList.add('alert', 'alert-success', 'fade', 'show');
+            notification.textContent = message;
+
+            var container = document.getElementById('notification-container');
+            container.appendChild(notification);
+
+            // Oculta la notificación después de 3 segundos
+            setTimeout(function () {
+                notification.classList.remove('show');
+                notification.remove();
+            }, 3000);
+        }
+
+        // Mensaje de éxito de TempData y notificación si existe
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            showNotification(successMessage);
+        }
+    </script>
 
     
 </body>
