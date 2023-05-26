@@ -1,41 +1,50 @@
 ﻿$(document).ready(function () {
-    cargarProductos();
-});
+    var paginaActual = 1;
 
-function cargarProductos() {
-    var claveCategoriaElement = document.getElementById('claveCategoria');
-    var clave = claveCategoriaElement.getAttribute('data-clave');
+    function cargarProductos(pagina) {
+        var claveCategoriaElement = document.getElementById('claveCategoria');
+        var clave = claveCategoriaElement.getAttribute('data-clave');
 
-    $.get('/VistaProductosCategoria/ObtenerProductosPorSucursalYCategoria', { clave: clave })
-        .done(function (data) {
-            var contenedor = $('#contenedorCards');
-            var filaActual;
+        $.get('/VistaProductosCategoria/ObtenerProductosPorSucursalYCategoria', { clave: clave, pagina: pagina })
+            .done(function (data) {
+                var contenedor = $('#contenedorCards');
+                var filaActual;
 
-            for (var i = 0; i < data.length; i++) {
-                var producto = data[i];
-                var card = crearCard(producto.nombre, producto.precioImpuestos, producto.id);
+                for (var i = 0; i < data.length; i++) {
+                    var producto = data[i];
+                    var card = crearCard(producto.nombre, producto.precioImpuestos, producto.id);
 
-                if (i % 3 === 0) {
-                    filaActual = $('<div class="row mb-4"></div>');
-                    contenedor.append(filaActual);
+                    if (i % 3 === 0) {
+                        filaActual = $('<div class="row mb-4"></div>');
+                        contenedor.append(filaActual);
+                    }
+
+                    var columna = $('<div class="col"></div>');
+                    columna.append(card);
+                    filaActual.append(columna);
                 }
 
-                var columna = $('<div class="col"></div>');
-                columna.append(card);
-                filaActual.append(columna);
-            }
+                // Agregar evento de clic a las cards
+                $('.card').on('click', function () {
+                    var idProducto = $(this).data('id-producto');
+                    console.log('Producto seleccionado - ID:', idProducto);
+                });
 
-            // Agregar evento de clic a las cards
-            $('.card').on('click', function () {
-                var idProducto = $(this).data('id-producto');
-                console.log('Producto seleccionado - ID:', idProducto);
+            })
+            .fail(function (error) {
+                console.log(error);
             });
+    }
 
-        })
-        .fail(function (error) {
-            console.log(error);
-        });
-}
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            paginaActual++;
+            cargarProductos(paginaActual);
+        }
+    });
+
+    cargarProductos(paginaActual);
+});
 
 function crearCard(nombreProducto, precioImpuestos, idProducto) {
     var card = $('<div class="card" style="width: 18rem; transition: transform 0.3s;"></div>');

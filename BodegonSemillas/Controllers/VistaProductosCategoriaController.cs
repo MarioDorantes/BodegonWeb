@@ -20,12 +20,11 @@ namespace BodegonSemillas.Controllers
 		}
 
         [HttpGet]
-        public async Task<IActionResult> ObtenerProductosPorSucursalYCategoria(string clave)
+        public async Task<IActionResult> ObtenerProductosPorSucursalYCategoria(string clave, int pagina = 1)
         {
             //id de la sucursal
             int id = 60;
             string categoria = clave;
-            int pagina = 1;
 
             var handler = new HttpClientHandler();
             handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
