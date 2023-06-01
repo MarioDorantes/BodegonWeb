@@ -21,9 +21,10 @@
         public int? IdPrecio { get; set; }
 
         public bool? enCarrito { get; set; }
+        public int? CantidadCarrito { get; set; }
         public bool? enFavoritos { get; set; }
 
         public int? totalCarrito { get; set; }
-
+        public decimal? Existencia { get; set; }
     }
 }

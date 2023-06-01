@@ -12,7 +12,7 @@ namespace BodegonSemillas.Controllers
     {
 
         string baseClientesURL = "http://192.168.100.10:5297";
-        string baseProductosURL = "https://192.168.100.10:5014";
+        string baseProductosURL = "http://192.168.100.10:5014";
 
 
 		private readonly ILogger<HomeController> _logger;

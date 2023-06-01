@@ -12,6 +12,7 @@ namespace BodegonSemillas.Controllers
 {
     public class InicioSesionController : Controller
     {
+        //Clientes
         string baseURL = "http://192.168.100.10:5297";
 
         public IActionResult Index()
