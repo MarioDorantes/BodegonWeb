@@ -41,7 +41,7 @@ namespace BodegonSemillas.Controllers
                     {
                         string json = await response.Content.ReadAsStringAsync();
                         var productoIndividual = JsonConvert.DeserializeObject<VistaProducto>(json);
-                        return View("Index", productoIndividual);
+                        return Json(productoIndividual);
                     }
                     else
                     {

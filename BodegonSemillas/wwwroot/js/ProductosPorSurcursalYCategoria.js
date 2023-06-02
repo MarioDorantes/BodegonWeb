@@ -87,10 +87,12 @@ function crearCard(nombreProducto, precioImpuestos, idPrecio) {
 }
 
 //Funcion para obtener el id de un producto individual, sirve para ir a la vista individual
+
 function obtenerProductoID(idPrecio) {
     $.get('/VistaProductoIndividual/ObtenerProductoPorID', { producto: idPrecio })
         .then(function (data) {
-
+            console.log("Producto:", data)
+            window.location.href = '/VistaProductoIndividual/Index';
         })
         .catch(function (error) {
             console.log('Error al obtener el producto:', error);
