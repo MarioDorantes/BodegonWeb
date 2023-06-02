@@ -92,7 +92,7 @@ function obtenerProductoID(idPrecio) {
     $.get('/VistaProductoIndividual/ObtenerProductoPorID', { producto: idPrecio })
         .then(function (data) {
             console.log("Producto:", data)
-            window.location.href = '/VistaProductoIndividual/Index';
+            //window.location.href = '/VistaProductoIndividual/Index?idPrecio=';
         })
         .catch(function (error) {
             console.log('Error al obtener el producto:', error);
