@@ -1,23 +1,86 @@
 ﻿@model VistaProducto
 
+@{
+    var idPrecio = Context.Request.Query["idPrecio"];
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <img src="" alt="Imagen del producto" />
+            <img src="" alt="Imagen del producto" style="max-width: 100%; height: auto;" />
         </div>
         <div class="col-md-6 align-items-center">
-            <h2>@Model.Nombre</h2>
-            <p>Precio: </p>
-            <button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white;">Realizar pedido</button>
-            <br> 
-            <button class="btn btn-success btn-lg my-2" style="background-color: #C1EAB2; color: #1B9A06;">Agregar al carrito</button>
+            <h2 id="nombreProducto"></h2>
+            <p id="precioProducto" style="font-size: 50px;"></p>
+            <p style="font-size: 14px; margin-top: -10px;">Impuestos incluidos</p>
+
+            <div style="display: flex; align-items: center;">
+                <p style="margin-right: 10px;">Cantidad:</p>
+                <input type="number" style="width: 60px; margin-top: -2px;">
+                <p id="existencia" style="margin-left: 10px;"></p>
+            </div>
+
+            <button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white; margin-top: 30px; width: 350px;">Realizar pedido</button>
+            <br>
+            <button class="btn btn-success btn-lg my-2" style="background-color: #C1EAB2; color: #1B9A06; width: 350px;">Agregar al carrito</button>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-top: 50px;">
             <h3>Descripción del producto</h3>
-            <p>DESCRIPCION</p>
+            <p id="marca"></p>
+            <p id="nombre"></p>
+            <p id="descripcion"></p>
+            <p id="medida"></p>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("ObtenerProductoPorID", "VistaProductoIndividual")',
+            type: 'GET',
+            data: { producto: '@idPrecio' },
+            dataType: 'json',
+            success: function (data) {
+                $('#nombreProducto').text(data.nombre);
+                $('#precioProducto').text('$' + data.precioImpuestos + ' pesos');
+                $('#existencia').text(data.existencia ? data.existencia + ' disponibles' : 'No disponible');
+                $('#marca').text('Marca: ' + (data.marca ? data.marca : 'No disponible'));
+                $('#nombre').text('Nombre: ' + data.nombre);
+                $('#descripcion').text('Descripción del producto: ' + (data.descripcion ? data.descripcion : 'No disponible'));
+                $('#medida').text('Medida: ' + (data.medida ? data.medida : 'No disponible'));
+            },
+            error: function (xhr, status, error) {
+                console.log("Ocurrió un error, intente más tarde");
+            }
+        });
+
+        //Funcion para obtener la imagen
+        $.ajax({
+            url: '/VistaProductosCategoria/ObtenerImagenProducto',
+            method: 'GET',
+            data: { producto: '@idPrecio' },
+            xhrFields: {
+                responseType: 'arraybuffer'
+            }
+        })
+            .done(function (data) {
+                var arrayBufferView = new Uint8Array(data);
+                var blob = new Blob([arrayBufferView], { type: 'image/jpeg' });
+                var imageUrl = URL.createObjectURL(blob);
+
+                // Asignar la imagen a la card
+                $('.col-md-6 img').attr('src', imageUrl);
+            })
+            .fail(function (error) {
+                console.log('Error al obtener la imagen del producto:', error);
+            });
+
+    });
+</script>
 

@@ -29,8 +29,7 @@
                 // Agregar evento de clic a las cards
                 $('.card').on('click', function () {
                     var idPrecio = $(this).data('id-precio');
-                    console.log('Producto:', idPrecio);
-                    obtenerProductoID(idPrecio);
+                    window.location.href = '/VistaProductoIndividual/Index?idPrecio=' + idPrecio;
                 });
 
             })
@@ -85,20 +84,6 @@ function crearCard(nombreProducto, precioImpuestos, idPrecio) {
 
     return card;
 }
-
-//Funcion para obtener el id de un producto individual, sirve para ir a la vista individual
-
-function obtenerProductoID(idPrecio) {
-    $.get('/VistaProductoIndividual/ObtenerProductoPorID', { producto: idPrecio })
-        .then(function (data) {
-            console.log("Producto:", data)
-            //window.location.href = '/VistaProductoIndividual/Index?idPrecio=';
-        })
-        .catch(function (error) {
-            console.log('Error al obtener el producto:', error);
-        });
-}
-
 
 //Función que sirve para obtener la imagen de cada producto, recibe la imagen y la ingresa al card
 function obtenerImagenProducto(idPrecio, card) {
