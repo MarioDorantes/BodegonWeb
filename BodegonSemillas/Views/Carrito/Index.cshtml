@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Carrito";
+    bool ejecutarScripts = ViewBag.EjecutarScripts ?? false;
 }
 <h1>@ViewData["Title"]</h1>
 
@@ -12,6 +13,17 @@
 
 <button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white;" onclick="window.location.href = '@Url.Action("Index", "RealizarPedido")'">Realizar pedido</button>
 
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/cargarCarrito.js"></script>
+
+@if (ejecutarScripts)
+{
+    <script src="~/js/cargarCarrito.js"></script>
+}
+else
+{
+    <script>
+        window.location.href = '@Url.Action("Index", "InicioSesion")';
+    </script>
+}

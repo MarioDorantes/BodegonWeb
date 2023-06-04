@@ -15,6 +15,11 @@ namespace BodegonSemillas.Controllers
 
         public IActionResult Index()
         {
+            string cliente = HttpContext.Session.GetString("IdCliente");
+            bool ejecutarScripts = !string.IsNullOrEmpty(cliente);
+
+            ViewData["EjecutarScripts"] = ejecutarScripts;
+
             return View();
         }
 
@@ -23,14 +28,7 @@ namespace BodegonSemillas.Controllers
         {
 
             string cliente = HttpContext.Session.GetString("IdCliente");
-
-            //int cliente = 33526;
             int sucursal = 60;
-
-            /*if (string.IsNullOrEmpty(cliente))
-            {
-                return RedirectToAction("Index", "InicioSesion");
-            }*/
 
             var handler = new HttpClientHandler();
             handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
