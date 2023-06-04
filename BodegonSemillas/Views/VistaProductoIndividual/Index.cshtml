@@ -19,13 +19,15 @@
 
             <div style="display: flex; align-items: center;">
                 <p style="margin-right: 10px;">Cantidad:</p>
-                <input type="number" style="width: 60px; margin-top: -2px;">
+                <input type="number" style="width: 60px; margin-top: -10px;">
                 <p id="existencia" style="margin-left: 10px;"></p>
             </div>
 
+            <div id="mensajeError" style="color: red; margin-top: 10px;"></div>
+
             <button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white; margin-top: 30px; width: 350px;">Realizar pedido</button>
             <br>
-            <button class="btn btn-success btn-lg my-2" style="background-color: #C1EAB2; color: #1B9A06; width: 350px;">Agregar al carrito</button>
+            <button id="agregarCarritoBtn" class="btn btn-success btn-lg my-2" style="background-color: #C1EAB2; color: #1B9A06; width: 350px;">Agregar al carrito</button>
         </div>
     </div>
     <div class="row">
@@ -41,6 +43,8 @@
 
 <script>
     $(document).ready(function () {
+
+        //Obtener datos del producto individual
         $.ajax({
             url: '@Url.Action("ObtenerProductoPorID", "VistaProductoIndividual")',
             type: 'GET',
@@ -80,6 +84,43 @@
             .fail(function (error) {
                 console.log('Error al obtener la imagen del producto:', error);
             });
+        
+
+        // Manejar el evento clic del botón "Agregar al carrito"
+        $('#agregarCarritoBtn').click(function () {
+            var cantidad = $('input[type="number"]').val();
+            var existencia = parseInt($('#existencia').text().split(' ')[0]);
+
+            // Validar que la cantidad sea un número positivo y no exceda la existencia
+            if (cantidad > 0 && cantidad <= existencia) {
+                $.ajax({
+                    url: '/VistaProductoIndividual/GuardarProductoEnCarrito',
+                    type: 'POST',
+                    data: { id: '@idPrecio', cantidad: cantidad },
+                    success: function (response) {
+                        console.log('El producto se agregó al carrito.');
+                        // Mostrar mensaje de éxito
+                        $('#mensajeError').text('El producto se agregó al carrito.');
+                        $('#mensajeError').css('color', 'green');
+
+                        // Redirigir a la página anterior después de 2 segundos
+                        setTimeout(function () {
+                            window.history.back();
+                        }, 2000);
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al agregar el producto al carrito:', error);
+                        // Mostrar mensaje de error
+                        $('#mensajeError').text('Error al agregar el producto al carrito. Inténtalo de nuevo.');
+                        $('#mensajeError').css('color', 'red');
+                    }
+                });
+            } else {
+                $('#mensajeError').text('La cantidad debe ser un número positivo y no puede exceder la existencia.');
+                $('#mensajeError').css('color', 'red');
+            }
+        });
 
     });
 </script>
