@@ -42,10 +42,10 @@ namespace BodegonSemillas.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         var result = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine(result);
                         var idCliente = result;
                         int idClienteParseado = int.Parse(idCliente);
                         await ObtenerNombreUsuario(idClienteParseado);
+                        HttpContext.Session.SetString("IdCliente", idClienteParseado.ToString());
                         return RedirectToAction("Index", "Home");
                     }
                     else

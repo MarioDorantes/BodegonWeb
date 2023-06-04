@@ -3,6 +3,8 @@ using System.Net.Http.Headers;
 using System.Net;
 using BodegonSemillas.Models;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+
 
 namespace BodegonSemillas.Controllers
 {
@@ -20,8 +22,15 @@ namespace BodegonSemillas.Controllers
         public async Task<IActionResult> ObtenerCarritoPorSucursal()
         {
 
-            int cliente = 33526;
+            string cliente = HttpContext.Session.GetString("IdCliente");
+
+            //int cliente = 33526;
             int sucursal = 60;
+
+            /*if (string.IsNullOrEmpty(cliente))
+            {
+                return RedirectToAction("Index", "InicioSesion");
+            }*/
 
             var handler = new HttpClientHandler();
             handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
