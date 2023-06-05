@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Confirmar pedido";
 }
+<h1>@ViewData["Title"]</h1>
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<p style="font-size: 25px; margin-top: 20px;">Seleccione una dirección de envío</p>
+
+<div id="contenedorCardsDirecciones"></div>
+
+<div class="total" style="font-size: 30px; margin-top: 10px;">
+    Total:
+</div>
+
+<button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white;">Confirmar pedido</button>
+
+
+
+<script>
+    $(document).ready(function () {
+        cargarDireccionesCliente();
+    });
+
+    function cargarDireccionesCliente() {
+        $.get('/RealizarPedido/ObtenerDirecciones', function (data) {
+            var contenedor = $('#contenedorCardsDirecciones');
+            contenedor.empty();
+
+            // Se recorren las direcciones y se crean las cards
+            data.forEach(function (direccion) {
+                var card = $('<div>').addClass('card mb-3');
+                var cardBody = $('<div>').addClass('card-body');
+
+                // Agregar el nombre completo a la card
+                var nombreCompleto = $('<h5>').addClass('card-title').text(direccion.nombreCompleto);
+                cardBody.append(nombreCompleto);
+
+                // Agregar la información de la dirección a la card
+                var informacionDireccion = $('<p>').addClass('card-text').text('Estado: ' + direccion.estado + ', Ciudad: ' + direccion.ciudad);
+                cardBody.append(informacionDireccion);
+                var informacionDireccion2 = $('<p>').addClass('card-text').text('Calle: ' + direccion.nombreCalle + ', Número: ' + direccion.numeroExt + ', CP: ' + direccion.cp);
+                cardBody.append(informacionDireccion2);
+
+                card.append(cardBody);
+                contenedor.append(card);
+
+                // Clic en card dirección
+                card.click(function () {
+                    contenedor.find('.card').removeClass('selected').css('border', ''); 
+                    card.addClass('selected').css('border', '5px solid #ADD8E6');
+                    // Mostrar iddireccion y idcliente en la consola
+                    console.log('iddireccion:', direccion.iddireccion);
+                    console.log('idcliente:', direccion.idcliente);
+                });
+
+            });
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+</script>
