@@ -46,7 +46,9 @@ namespace BodegonSemillas.Controllers
                         int idClienteParseado = int.Parse(idCliente);
                         await ObtenerNombreUsuario(idClienteParseado);
                         HttpContext.Session.SetString("IdCliente", idClienteParseado.ToString());
-                        return RedirectToAction("Index", "Home");
+                        //Informacion para session
+                        HttpContext.Session.SetString("IsLoggedIn", true.ToString());
+                        return RedirectToAction("Index", "Home", new { IsLoggedIn = true });
                     }
                     else
                     {
@@ -103,6 +105,14 @@ namespace BodegonSemillas.Controllers
 
             return View();
         }
+
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Remove("IsLoggedIn");
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
 
     }
 }

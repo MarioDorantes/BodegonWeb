@@ -22,8 +22,9 @@ namespace BodegonSemillas.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(bool? IsLoggedIn)
         {
+            ViewBag.IsLoggedIn = IsLoggedIn ?? false;
             return View();
         }
 
