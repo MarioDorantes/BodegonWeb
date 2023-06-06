@@ -17,7 +17,9 @@
     Total:
 </div>
 
-<button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white;">Confirmar pedido</button>
+<div id="mensajeError" style="color: red; font-size: larger; margin-top: 10px; margin-bottom: 10px;"></div> 
+
+<button class="btn btn-success btn-lg" style="background-color: #1B9A06; color: white;" onclick="confirmarPedido()">Confirmar pedido</button>
 
 
 
@@ -26,6 +28,11 @@
         cargarDireccionesCliente();
     });
 
+    var direccionID;
+    var clienteID;
+    var pedidoCarritoInfoAux;
+
+    //Funcion para obtener direcciones y agregarlas a las cards
     function cargarDireccionesCliente() {
         $.get('/RealizarPedido/ObtenerDirecciones', function (data) {
             var contenedor = $('#contenedorCardsDirecciones');
@@ -43,7 +50,7 @@
                 // Agregar la información de la dirección a la card
                 var informacionDireccion = $('<p>').addClass('card-text').text('Estado: ' + direccion.estado + ', Ciudad: ' + direccion.ciudad);
                 cardBody.append(informacionDireccion);
-                var informacionDireccion2 = $('<p>').addClass('card-text').text('Calle: ' + direccion.nombreCalle + ', Número: ' + direccion.numeroExt + ', CP: ' + direccion.cp);
+                var informacionDireccion2 = $('<p>').addClass('card-text').text('Colonia: ' + direccion.colonia + ', Calle: ' + direccion.nombreCalle + ', Número: ' + direccion.numeroExt + ', CP: ' + direccion.cp);
                 cardBody.append(informacionDireccion2);
 
                 card.append(cardBody);
@@ -53,9 +60,11 @@
                 card.click(function () {
                     contenedor.find('.card').removeClass('selected').css('border', ''); 
                     card.addClass('selected').css('border', '5px solid #ADD8E6');
-                    // Mostrar iddireccion y idcliente en la consola
-                    console.log('iddireccion:', direccion.iddireccion);
-                    console.log('idcliente:', direccion.idcliente);
+
+                    direccionId = direccion ? direccion.iddireccion : null;
+                    clienteId = direccion ? direccion.idcliente : null;
+                    $('#mensajeError').empty();
+                    obtenerCarritoYProductos();
                 });
 
             });
@@ -63,6 +72,86 @@
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    function obtenerCarritoYProductos() {
+        $.get('/Carrito/ObtenerCarritoPorSucursal')
+            .done(function (response) {
+                var totalCarrito = response.totalCarrito;
+                mostrarTotalCarrito(totalCarrito);
+
+                if (response.productos && Array.isArray(response.productos)) {
+                    var productos = response.productos;
+
+                    var PedidoCarritoInfo = {
+                        IdCliente: clienteId,
+                        IdSucursal: 60,
+                        IdDireccion: direccionId,
+                        ProductosPedido: []
+                    };
+
+                    // Recorrer los productos y crear objetos ProductoPedido
+                    for (var i = 0; i < productos.length; i++) {
+                        var producto = productos[i];
+                        var idPrecio = producto.idPrecio;
+                        var cantidadCarrito = producto.cantidadCarrito;
+
+                        // Crear un objeto ProductoPedido y agregarlo al pedido
+                        var ProductosPedido = {
+                            IdPrecio: idPrecio,
+                            Cantidad: cantidadCarrito
+                        };
+                        PedidoCarritoInfo.ProductosPedido.push(ProductosPedido);
+                    }
+
+                    pedidoCarritoInfoAux = PedidoCarritoInfo;
+
+                } else {
+                    console.log("La respuesta del servidor no incluye una lista de productos válida.");
+                }
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
+    }
+
+    function mostrarTotalCarrito(totalCarrito) {
+        var totalElement = $('.total');
+        totalElement.text('Total: $' + totalCarrito + " pesos");
+    }
+
+    function confirmarPedido() {
+        if (typeof clienteId !== 'undefined' && typeof direccionId !== 'undefined') {
+
+            var carritoPedido = {
+                IdCliente: pedidoCarritoInfoAux.IdCliente,
+                IdSucursal: pedidoCarritoInfoAux.IdSucursal,
+                IdDireccion: pedidoCarritoInfoAux.IdDireccion,
+                ProductosPedido: pedidoCarritoInfoAux.ProductosPedido
+            };
+
+            $.ajax({
+                url: '/RealizarPedido/RegistrarNuevoPedido',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(carritoPedido),
+                success: function (response) {
+                    $('#mensajeError').text('Pedido realizado exitosamente.');
+                    $('#mensajeError').css('color', 'green');
+                    
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    }, 2000);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al registrar el pedido:', error);
+                }
+            });
+
+        } else {
+            $('#mensajeError').text('Para confirmar el pedido, seleccione una dirección');
+            $('#mensajeError').css('color', 'red');
+        }
     }
 
 </script>
